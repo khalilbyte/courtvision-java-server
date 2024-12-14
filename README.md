@@ -45,6 +45,7 @@ The project uses Spring Boot 3.4 and is built with Maven. Key dependencies inclu
 - Spring Data R2DBC: Reactive database connectivity
 - PostgreSQL & R2DBC PostgreSQL: Database and its reactive driver
 - Project Lombok: Reduces boilerplate code
+- Validation: Bean Validation with Hibernate validator
 
 ### Development Dependencies
 - Spring Boot DevTools: Development-time features
