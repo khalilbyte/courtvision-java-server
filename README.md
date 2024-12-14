@@ -57,7 +57,6 @@ mvn clean install
 
 ## Running the Application
 ### Development Mode
-## Running the App:
 Ensure PostgreSQL service is running and from your project directory run:
 ```
 mvn spring-boot:run
@@ -69,8 +68,7 @@ Create JAR
 ```
 mvn clean package
 ```
-
-### Run JAR
+Run JAR
 java -jar target/courtvision-server-0.0.1-SNAPSHOT.jar
 
 ## API Documentation
