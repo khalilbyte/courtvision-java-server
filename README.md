@@ -69,19 +69,21 @@ Create JAR
 mvn clean package
 ```
 Run JAR
+```
 java -jar target/courtvision-server-0.0.1-SNAPSHOT.jar
+```
 
 ## API Documentation
 The API follows RESTful conventions. Base URL: http://localhost:8080/api/v1
 
 #### Players
-GET /players - List all players
-GET /players/{id} - Get player details
-GET /players/search?name={name} - Search players by name
+- GET /players - List all players
+- GET /players/{id} - Get player details
+- GET /players/search?name={name} - Search players by name
 
 #### Teams
-GET /teams - List all teams
-POST /teams - Create new team
-PUT /teams/{id} - Update team
-DELETE /teams/{id} - Delete team
+- GET /teams - List all teams
+- POST /teams - Create new team
+- PUT /teams/{id} - Update team
+- DELETE /teams/{id} - Delete team
 
