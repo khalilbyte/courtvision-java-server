@@ -38,7 +38,7 @@ spring.r2dbc.password=your_password
 
 ## Dependencies
 
-The project uses Spring Boot 3.3.5 and is built with Maven. Key dependencies include:
+The project uses Spring Boot 3.4 and is built with Maven. Key dependencies include:
 
 ### Core Dependencies
 - Spring Boot WebFlux: Reactive web framework
@@ -50,6 +50,7 @@ The project uses Spring Boot 3.3.5 and is built with Maven. Key dependencies inc
 - Spring Boot DevTools: Development-time features
 - Spring Boot Test: Testing framework
 - Reactor Test: Testing reactive streams
+
 To install all dependencies, simply run:
 ```
 mvn clean install
