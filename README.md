@@ -22,14 +22,14 @@ The NBA regular season is spans across 7 months and over 1200 games. For NBA Fan
 - PostgreSQL
 
 ### Local Setup
-Clone the repository:
+1. Clone the repository:
 ```
-git clone https://github.com/fullstackkg/CourtVision.git
+git clone https://github.com/fullstackkg/courtvision-java-server.git
 ```
 
-Create a PostgreSQL database named "courtvision_db"
+2. Create a PostgreSQL database named "courtvision_db"
 
-Configure application.properties in `src/main/resources`:
+3. Configure application.properties in `src/main/resources`:
 ```
 spring.r2dbc.url=r2dbc:postgresql://localhost:5432/courtvision_db
 spring.r2dbc.username=your_username
