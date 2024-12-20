@@ -15,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "totalPlayers"
 })
 
-public class PlayerListDTOResponse {
+public class PlayerSummaryResponse {
     @JsonProperty("players")
-    private List<PlayerListDTO> players;
+    private List<PlayerSummary> players;
     @JsonProperty("currentPage")
     private Integer currentPage;
     @JsonProperty("nextPage")
@@ -29,10 +29,10 @@ public class PlayerListDTOResponse {
     @JsonProperty("totalPlayers")
     private Integer totalPlayers;
 
-    public PlayerListDTOResponse() {
+    public PlayerSummaryResponse() {
     }
 
-    public PlayerListDTOResponse(List<PlayerListDTO> players, Integer currentPage, Integer nextPage, Integer previousPage, Boolean isLastPage, Integer totalPlayers) {
+    public PlayerSummaryResponse(List<PlayerSummary> players, Integer currentPage, Integer nextPage, Integer previousPage, Boolean isLastPage, Integer totalPlayers) {
         this.players = players;
         this.currentPage = currentPage;
         this.nextPage = nextPage;
@@ -42,12 +42,12 @@ public class PlayerListDTOResponse {
     }
 
     @JsonProperty("players")
-    public List<PlayerListDTO> getPlayers() {
+    public List<PlayerSummary> getPlayers() {
         return players;
     }
 
     @JsonProperty("players")
-    public void setPlayers(List<PlayerListDTO> players) {
+    public void setPlayers(List<PlayerSummary> players) {
         this.players = players;
     }
 
@@ -103,7 +103,7 @@ public class PlayerListDTOResponse {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("PlayerListDTOResponse{");
+        final StringBuilder sb = new StringBuilder("PlayerSummaryResponse{");
         sb.append("players=").append(players);
         sb.append(", currentPage=").append(currentPage);
         sb.append(", nextPage=").append(nextPage);
@@ -118,7 +118,7 @@ public class PlayerListDTOResponse {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PlayerListDTOResponse that = (PlayerListDTOResponse) o;
+        PlayerSummaryResponse that = (PlayerSummaryResponse) o;
         return Objects.equals(getPlayers(), that.getPlayers()) && Objects.equals(getCurrentPage(), that.getCurrentPage()) && Objects.equals(getNextPage(), that.getNextPage()) && Objects.equals(getPreviousPage(), that.getPreviousPage()) && Objects.equals(getIsLastPage(), that.getIsLastPage()) && Objects.equals(getTotalPlayers(), that.getTotalPlayers());
     }
 

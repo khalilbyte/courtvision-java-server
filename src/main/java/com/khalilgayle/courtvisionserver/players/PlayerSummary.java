@@ -3,7 +3,6 @@ package com.khalilgayle.courtvisionserver.players;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -30,7 +29,7 @@ import java.util.Objects;
         "team_image_url"
 })
 
-public class PlayerListDTO {
+public class PlayerSummary {
     @JsonProperty("player_id")
     private Long playerId;
     @JsonProperty("first_name")
@@ -66,10 +65,10 @@ public class PlayerListDTO {
     @JsonProperty("team_image_url")
     private String teamImageUrl;
 
-    public PlayerListDTO() {
+    public PlayerSummary() {
     }
 
-    public PlayerListDTO(Long playerId, String firstName, String lastName, LocalDateTime birthDate, String height, Short weight, Byte seasonExp, Byte jersey, String position, Long teamId, String teamCity, String teamName, String conference, String division, String playerImageUrl, String teamImageUrl) {
+    public PlayerSummary(Long playerId, String firstName, String lastName, LocalDateTime birthDate, String height, Short weight, Byte seasonExp, Byte jersey, String position, Long teamId, String teamCity, String teamName, String conference, String division, String playerImageUrl, String teamImageUrl) {
         super();
         this.playerId = playerId;
         this.firstName = firstName;
@@ -255,7 +254,7 @@ public class PlayerListDTO {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("PlayerListDTO{");
+        final StringBuilder sb = new StringBuilder("PlayerSummary{");
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
         sb.append("playerId=").append(playerId);
         sb.append(", firstName='").append(firstName).append('\'');
@@ -287,25 +286,25 @@ public class PlayerListDTO {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof PlayerListDTO playerListDTO)) {
+        if (!(other instanceof PlayerSummary playerSummary)) {
             return false;
         }
-        return Objects.equals(this.teamName, playerListDTO.teamName)
-                && Objects.equals(this.lastName, playerListDTO.lastName)
-                && Objects.equals(this.conference, playerListDTO.conference)
-                && Objects.equals(this.seasonExp, playerListDTO.seasonExp)
-                && Objects.equals(this.weight, playerListDTO.weight)
-                && Objects.equals(this.teamCity, playerListDTO.teamCity)
-                && Objects.equals(this.birthDate, playerListDTO.birthDate)
-                && Objects.equals(this.division, playerListDTO.division)
-                && Objects.equals(this.firstName, playerListDTO.firstName)
-                && Objects.equals(this.playerImageUrl, playerListDTO.playerImageUrl)
-                && Objects.equals(this.jersey, playerListDTO.jersey)
-                && Objects.equals(this.teamId, playerListDTO.teamId)
-                && Objects.equals(this.position, playerListDTO.position)
-                && Objects.equals(this.playerId, playerListDTO.playerId)
-                && Objects.equals(this.height, playerListDTO.height)
-                && Objects.equals(this.teamImageUrl, playerListDTO.teamImageUrl);
+        return Objects.equals(this.teamName, playerSummary.teamName)
+                && Objects.equals(this.lastName, playerSummary.lastName)
+                && Objects.equals(this.conference, playerSummary.conference)
+                && Objects.equals(this.seasonExp, playerSummary.seasonExp)
+                && Objects.equals(this.weight, playerSummary.weight)
+                && Objects.equals(this.teamCity, playerSummary.teamCity)
+                && Objects.equals(this.birthDate, playerSummary.birthDate)
+                && Objects.equals(this.division, playerSummary.division)
+                && Objects.equals(this.firstName, playerSummary.firstName)
+                && Objects.equals(this.playerImageUrl, playerSummary.playerImageUrl)
+                && Objects.equals(this.jersey, playerSummary.jersey)
+                && Objects.equals(this.teamId, playerSummary.teamId)
+                && Objects.equals(this.position, playerSummary.position)
+                && Objects.equals(this.playerId, playerSummary.playerId)
+                && Objects.equals(this.height, playerSummary.height)
+                && Objects.equals(this.teamImageUrl, playerSummary.teamImageUrl);
     }
 
 }

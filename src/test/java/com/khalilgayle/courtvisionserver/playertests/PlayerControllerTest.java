@@ -1,14 +1,18 @@
 package com.khalilgayle.courtvisionserver.playertests;
 
-import com.khalilgayle.courtvisionserver.players.PlayerListDTO;
-import com.khalilgayle.courtvisionserver.players.PlayerListDTOResponse;
+import com.khalilgayle.courtvisionserver.players.PlayerSummary;
+import com.khalilgayle.courtvisionserver.players.PlayerSummaryResponse;
 import com.khalilgayle.courtvisionserver.players.PlayerService;
+import com.khalilgayle.courtvisionserver.players.playerexceptions.PlayerNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -34,9 +38,9 @@ public class PlayerControllerTest {
     @Mock
     WebClient.RequestHeadersSpec requestHeadersSpec;
 
-    PlayerListDTO testPlayer1 = new PlayerListDTO(1630173L, "Precious", "Achiuwa", LocalDateTime.parse("1999-09-19T00:00:00"), "6-8", (short) 243, (byte) 4, (byte) 5, "Forward", 1610612752L, "New York", "Knicks", "Eastern", "Atlantic", "https://cdn.nba.com/headshots/nba/latest/1040x760/1630173.png", "https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg");
-    PlayerListDTO testPlayer2 = new PlayerListDTO(203500L, "Steven", "Adams", LocalDateTime.parse("1993-07-20T00:00:00"), "6-11", (short) 265, (byte) 10, (byte) 12, "Center", 1610612745L, "Houston", "Rockets", "Western", "Southwest", "https://cdn.nba.com/headshots/nba/latest/1040x760/203500.png", "https://cdn.nba.com/logos/nba/1610612745/global/L/logo.svg");
-    PlayerListDTO testPlayer3 = new PlayerListDTO(1628389L, "Bam", "Adebayo", LocalDateTime.parse("1997-07-18T00:00:00"), "6-9", (short) 255, (byte) 7, (byte) 13, "Center-Forward", 1610612748L, "Miami", "Heat", "Eastern", "Southeast", "https://cdn.nba.com/headshots/nba/latest/1040x760/1628389.png", "https://cdn.nba.com/logos/nba/1610612748/global/L/logo.svg");
+    PlayerSummary testPlayer1 = new PlayerSummary(1630173L, "Precious", "Achiuwa", LocalDateTime.parse("1999-09-19T00:00:00"), "6-8", (short) 243, (byte) 4, (byte) 5, "Forward", 1610612752L, "New York", "Knicks", "Eastern", "Atlantic", "https://cdn.nba.com/headshots/nba/latest/1040x760/1630173.png", "https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg");
+    PlayerSummary testPlayer2 = new PlayerSummary(203500L, "Steven", "Adams", LocalDateTime.parse("1993-07-20T00:00:00"), "6-11", (short) 265, (byte) 10, (byte) 12, "Center", 1610612745L, "Houston", "Rockets", "Western", "Southwest", "https://cdn.nba.com/headshots/nba/latest/1040x760/203500.png", "https://cdn.nba.com/logos/nba/1610612745/global/L/logo.svg");
+    PlayerSummary testPlayer3 = new PlayerSummary(1628389L, "Bam", "Adebayo", LocalDateTime.parse("1997-07-18T00:00:00"), "6-9", (short) 255, (byte) 7, (byte) 13, "Center-Forward", 1610612748L, "Miami", "Heat", "Eastern", "Southeast", "https://cdn.nba.com/headshots/nba/latest/1040x760/1628389.png", "https://cdn.nba.com/logos/nba/1610612748/global/L/logo.svg");
 
     @BeforeEach
     void setUp() {
@@ -46,7 +50,7 @@ public class PlayerControllerTest {
 
     @Test
     void testGetAllPlayers() {
-        PlayerListDTOResponse testResponse = new PlayerListDTOResponse(
+        PlayerSummaryResponse testResponse = new PlayerSummaryResponse(
                 List.of(testPlayer1, testPlayer2, testPlayer3),
                 1,
                 2,
@@ -83,5 +87,64 @@ public class PlayerControllerTest {
                     return metadataValid && playersValid;
                 })
                 .verifyComplete();
+    }
+
+    @Test
+    void testGetPlayers_WithEmptyResponse() {
+        PlayerSummaryResponse emptyResponse = new PlayerSummaryResponse(
+                List.of(),
+                1,
+                null,
+                null,
+                true,
+                0
+        );
+
+        when(webClient.get()).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(any(Function.class))).thenReturn(requestHeadersSpec);
+        when(requestHeadersSpec.accept(MediaType.APPLICATION_JSON)).thenReturn(requestHeadersSpec);
+        when(requestHeadersSpec.exchangeToMono(any(Function.class)))
+                .thenReturn(Mono.just(emptyResponse));
+
+        StepVerifier.create(playerService.getPlayers(1, 3))
+                .expectNextMatches(response ->
+                        response.getPlayers().isEmpty() &&
+                                response.getIsLastPage() &&
+                                response.getTotalPlayers() == 0)
+                .verifyComplete();
+    }
+
+    @Test
+    void testGetByPlayerId_ReturnPlayerSummary() {
+        PlayerSummary testPlayer1 = new PlayerSummary(1630173L, "Precious", "Achiuwa", LocalDateTime.parse("1999-09-19T00:00:00"), "6-8", (short) 243, (byte) 4, (byte) 5, "Forward", 1610612752L, "New York", "Knicks", "Eastern", "Atlantic", "https://cdn.nba.com/headshots/nba/latest/1040x760/1630173.png", "https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg");
+
+        when(webClient.get()).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(any(Function.class))).thenReturn(requestHeadersSpec);
+        when(requestHeadersSpec.accept(MediaType.APPLICATION_JSON)).thenReturn(requestHeadersSpec);
+        when(requestHeadersSpec.exchangeToMono(any(Function.class)))
+                .thenReturn(Mono.just(testPlayer1));
+
+        StepVerifier.create(playerService.getPlayerById(testPlayer1.getPlayerId()))
+                .expectNextMatches(response -> response.getFirstName().equals("Precious") &&
+                        response.getLastName().equals("Achiuwa") &&
+                        response.getTeamId() == 1610612752 &&
+                        response.getTeamCity().equals("New York") &&
+                        response.getTeamName().equals("Knicks"))
+                .verifyComplete();
+    }
+
+    @Test
+    void testGetByPlayerId_PlayerNotFound() {
+        when(webClient.get()).thenReturn(requestHeadersUriSpec);
+        when(requestHeadersUriSpec.uri(any(Function.class))).thenReturn(requestHeadersSpec);
+        when(requestHeadersSpec.accept(MediaType.APPLICATION_JSON)).thenReturn(requestHeadersSpec);
+        when(requestHeadersSpec.exchangeToMono(any(Function.class)))
+                .thenReturn(Mono.error(new PlayerNotFoundException("No player found")));
+
+        StepVerifier.create(playerService.getPlayerById(145524323L))
+                .expectErrorMatches(throwable ->
+                        throwable instanceof PlayerNotFoundException &&
+                                throwable.getMessage().equals("No player found"))
+                .verify();
     }
 }
