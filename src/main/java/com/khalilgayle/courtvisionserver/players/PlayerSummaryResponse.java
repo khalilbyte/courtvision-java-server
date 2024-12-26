@@ -8,25 +8,25 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({
         "players",
-        "currentPage",
-        "nextPage",
-        "previousPage",
-        "isLastPage",
-        "totalPlayers"
+        "current_page",
+        "next_page",
+        "previous_page",
+        "is_last_page",
+        "total_players"
 })
 
 public class PlayerSummaryResponse {
     @JsonProperty("players")
     private List<PlayerSummary> players;
-    @JsonProperty("currentPage")
+    @JsonProperty("current_page")
     private Integer currentPage;
-    @JsonProperty("nextPage")
+    @JsonProperty("next_page")
     private Integer nextPage;
-    @JsonProperty("previousPage")
+    @JsonProperty("previous_page")
     private Integer previousPage;
-    @JsonProperty("isLastPage")
+    @JsonProperty("is_last_page")
     private Boolean isLastPage;
-    @JsonProperty("totalPlayers")
+    @JsonProperty("total_players")
     private Integer totalPlayers;
 
     public PlayerSummaryResponse() {
@@ -51,52 +51,52 @@ public class PlayerSummaryResponse {
         this.players = players;
     }
 
-    @JsonProperty("currentPage")
+    @JsonProperty("current_page")
     public Integer getCurrentPage() {
         return currentPage;
     }
 
-    @JsonProperty("currentPage")
+    @JsonProperty("current_page")
     public void setCurrentPage(Integer currentPage) {
         this.currentPage = currentPage;
     }
 
-    @JsonProperty("nextPage")
+    @JsonProperty("next_page")
     public Integer getNextPage() {
         return nextPage;
     }
 
-    @JsonProperty("nextPage")
+    @JsonProperty("next_page")
     public void setNextPage(Integer nextPage) {
         this.nextPage = nextPage;
     }
 
-    @JsonProperty("previousPage")
+    @JsonProperty("previous_page")
     public Integer getPreviousPage() {
         return previousPage;
     }
 
-    @JsonProperty("previousPage")
+    @JsonProperty("previous_page")
     public void setPreviousPage(Integer previousPage) {
         this.previousPage = previousPage;
     }
 
-    @JsonProperty("isLastPage")
+    @JsonProperty("is_last_page")
     public Boolean getIsLastPage() {
         return isLastPage;
     }
 
-    @JsonProperty("isLastPage")
+    @JsonProperty("is_last_page")
     public void setIsLastPage(Boolean isLastPage) {
         this.isLastPage = isLastPage;
     }
 
-    @JsonProperty("totalPlayers")
+    @JsonProperty("total_players")
     public Integer getTotalPlayers() {
         return totalPlayers;
     }
 
-    @JsonProperty("totalPlayers")
+    @JsonProperty("total_players")
     public void setTotalPlayers(Integer totalPlayers) {
         this.totalPlayers = totalPlayers;
     }

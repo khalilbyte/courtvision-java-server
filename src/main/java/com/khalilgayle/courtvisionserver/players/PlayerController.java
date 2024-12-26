@@ -1,9 +1,6 @@
 package com.khalilgayle.courtvisionserver.players;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -24,7 +21,7 @@ public class PlayerController {
     }
 
     @GetMapping("/players/{playerId}")
-    public Mono<PlayerSummary> getByPlayerId(long playerId) {
+    public Mono<PlayerSummary> getByPlayerId(@PathVariable long playerId) {
         return playerService.getPlayerById(playerId);
     }
 }

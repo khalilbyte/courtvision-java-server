@@ -36,19 +36,16 @@ public class PlayerSummary {
     private String firstName;
     @JsonProperty("last_name")
     private String lastName;
+    @JsonProperty("birth_date")
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime birthDate;
-    @JsonProperty("height")
     private String height;
-    @JsonProperty("weight")
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Short weight;
     @JsonProperty("season_exp")
     private Byte seasonExp;
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    @JsonProperty("jersey")
     private Byte jersey;
-    @JsonProperty("position")
     private String position;
     @JsonProperty("team_id")
     private Long teamId;
@@ -56,9 +53,7 @@ public class PlayerSummary {
     private String teamCity;
     @JsonProperty("team_name")
     private String teamName;
-    @JsonProperty("conference")
     private String conference;
-    @JsonProperty("division")
     private String division;
     @JsonProperty("player_image_url")
     private String playerImageUrl;
@@ -88,162 +83,130 @@ public class PlayerSummary {
         this.teamImageUrl = teamImageUrl;
     }
 
-    @JsonProperty("player_id")
     public Long getPlayerId() {
         return playerId;
     }
 
-    @JsonProperty("player_id")
     public void setPlayerId(Long playerId) {
         this.playerId = playerId;
     }
 
-    @JsonProperty("first_name")
     public String getFirstName() {
         return firstName;
     }
 
-    @JsonProperty("first_name")
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    @JsonProperty("last_name")
     public String getLastName() {
         return lastName;
     }
 
-    @JsonProperty("last_name")
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    @JsonProperty("birth_date")
     public LocalDateTime getBirthDate() {
         return birthDate;
     }
 
-    @JsonProperty("birth_date")
     public void setBirthDate(LocalDateTime birthDate) {
         this.birthDate = birthDate;
     }
 
-    @JsonProperty("height")
     public String getHeight() {
         return height;
     }
 
-    @JsonProperty("height")
     public void setHeight(String height) {
         this.height = height;
     }
 
-    @JsonProperty("weight")
     public Short getWeight() {
         return weight;
     }
 
-    @JsonProperty("weight")
     public void setWeight(Short weight) {
         this.weight = weight;
     }
 
-    @JsonProperty("season_exp")
     public Byte getSeasonExp() {
         return seasonExp;
     }
 
-    @JsonProperty("season_exp")
     public void setSeasonExp(Byte seasonExp) {
         this.seasonExp = seasonExp;
     }
 
-    @JsonProperty("jersey")
     public Byte getJersey() {
         return jersey;
     }
 
-    @JsonProperty("jersey")
     public void setJersey(Byte jersey) {
         this.jersey = jersey;
     }
 
-    @JsonProperty("position")
     public String getPosition() {
         return position;
     }
 
-    @JsonProperty("position")
     public void setPosition(String position) {
         this.position = position;
     }
 
-    @JsonProperty("team_id")
     public Long getTeamId() {
         return teamId;
     }
 
-    @JsonProperty("team_id")
     public void setTeamId(Long teamId) {
         this.teamId = teamId;
     }
 
-    @JsonProperty("team_city")
     public String getTeamCity() {
         return teamCity;
     }
 
-    @JsonProperty("team_city")
     public void setTeamCity(String teamCity) {
         this.teamCity = teamCity;
     }
 
-    @JsonProperty("team_name")
     public String getTeamName() {
         return teamName;
     }
 
-    @JsonProperty("team_name")
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
 
-    @JsonProperty("conference")
     public String getConference() {
         return conference;
     }
 
-    @JsonProperty("conference")
     public void setConference(String conference) {
         this.conference = conference;
     }
 
-    @JsonProperty("division")
     public String getDivision() {
         return division;
     }
 
-    @JsonProperty("division")
     public void setDivision(String division) {
         this.division = division;
     }
 
-    @JsonProperty("player_image_url")
     public String getPlayerImageUrl() {
         return playerImageUrl;
     }
 
-    @JsonProperty("player_image_url")
     public void setPlayerImageUrl(String playerImageUrl) {
         this.playerImageUrl = playerImageUrl;
     }
 
-    @JsonProperty("team_image_url")
     public String getTeamImageUrl() {
         return teamImageUrl;
     }
 
-    @JsonProperty("team_image_url")
     public void setTeamImageUrl(String teamImageUrl) {
         this.teamImageUrl = teamImageUrl;
     }
@@ -277,34 +240,15 @@ public class PlayerSummary {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(getPlayerId(), getFirstName(), getLastName(), getBirthDate(), getHeight(), getWeight(), getSeasonExp(), getJersey(), getPosition(), getTeamId(), getTeamCity(), getTeamName(), getConference(), getDivision(), getPlayerImageUrl(), getTeamImageUrl());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlayerSummary that = (PlayerSummary) o;
+        return Objects.equals(getPlayerId(), that.getPlayerId()) && Objects.equals(getFirstName(), that.getFirstName()) && Objects.equals(getLastName(), that.getLastName()) && Objects.equals(getBirthDate(), that.getBirthDate()) && Objects.equals(getHeight(), that.getHeight()) && Objects.equals(getWeight(), that.getWeight()) && Objects.equals(getSeasonExp(), that.getSeasonExp()) && Objects.equals(getJersey(), that.getJersey()) && Objects.equals(getPosition(), that.getPosition()) && Objects.equals(getTeamId(), that.getTeamId()) && Objects.equals(getTeamCity(), that.getTeamCity()) && Objects.equals(getTeamName(), that.getTeamName()) && Objects.equals(getConference(), that.getConference()) && Objects.equals(getDivision(), that.getDivision()) && Objects.equals(getPlayerImageUrl(), that.getPlayerImageUrl()) && Objects.equals(getTeamImageUrl(), that.getTeamImageUrl());
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
-            return true;
-        }
-        if (!(other instanceof PlayerSummary playerSummary)) {
-            return false;
-        }
-        return Objects.equals(this.teamName, playerSummary.teamName)
-                && Objects.equals(this.lastName, playerSummary.lastName)
-                && Objects.equals(this.conference, playerSummary.conference)
-                && Objects.equals(this.seasonExp, playerSummary.seasonExp)
-                && Objects.equals(this.weight, playerSummary.weight)
-                && Objects.equals(this.teamCity, playerSummary.teamCity)
-                && Objects.equals(this.birthDate, playerSummary.birthDate)
-                && Objects.equals(this.division, playerSummary.division)
-                && Objects.equals(this.firstName, playerSummary.firstName)
-                && Objects.equals(this.playerImageUrl, playerSummary.playerImageUrl)
-                && Objects.equals(this.jersey, playerSummary.jersey)
-                && Objects.equals(this.teamId, playerSummary.teamId)
-                && Objects.equals(this.position, playerSummary.position)
-                && Objects.equals(this.playerId, playerSummary.playerId)
-                && Objects.equals(this.height, playerSummary.height)
-                && Objects.equals(this.teamImageUrl, playerSummary.teamImageUrl);
+    public int hashCode() {
+        return Objects.hash(getPlayerId(), getFirstName(), getLastName(), getBirthDate(), getHeight(), getWeight(), getSeasonExp(), getJersey(), getPosition(), getTeamId(), getTeamCity(), getTeamName(), getConference(), getDivision(), getPlayerImageUrl(), getTeamImageUrl());
     }
-
 }

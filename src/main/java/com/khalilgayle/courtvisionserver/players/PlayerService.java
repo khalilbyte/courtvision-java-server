@@ -1,7 +1,6 @@
 package com.khalilgayle.courtvisionserver.players;
 
-import com.khalilgayle.courtvisionserver.players.playerexceptions.PlayerException;
-import com.khalilgayle.courtvisionserver.players.playerexceptions.PlayerNotFoundException;
+import com.khalilgayle.courtvisionserver.errorhandling.PlayerNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class PlayerService {
                     } else if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                         return clientResponse.bodyToMono(PlayerSummaryResponse.class);
                     } else {
-                        return Mono.error(new PlayerException("Internal service error occurred while fetching players"));
+                        return Mono.error(new RuntimeException("Internal service error occurred while fetching players"));
                     }
                 });
     }
@@ -52,7 +51,7 @@ public class PlayerService {
                     } else if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                         return clientResponse.bodyToMono(PlayerSummary.class);
                     } else {
-                        return Mono.error(new PlayerException("Internal service error occurred while fetching player with ID: " + playerId));
+                        return Mono.error(new RuntimeException("Internal service error occurred while fetching player with ID: " + playerId));
                     }
                 });
     }
