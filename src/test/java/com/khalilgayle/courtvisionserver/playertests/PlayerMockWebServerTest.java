@@ -41,12 +41,13 @@ public class PlayerMockWebServerTest {
         playerService = new PlayerService(WebClient.builder().baseUrl(baseUrl).build());
     }
 
-    PlayerSummary player1 = new PlayerSummary(1630173L, "Precious", "Achiuwa", LocalDateTime.parse("1999-09-19T00:00:00"), "6-8", (short) 243, (byte) 4, (byte) 5, "Forward", 1610612752L, "New York", "Knicks", "Eastern", "Atlantic", "https://cdn.nba.com/headshots/nba/latest/1040x760/1630173.png", "https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg");
-    PlayerSummary player2 = new PlayerSummary(203500L, "Steven", "Adams", LocalDateTime.parse("1993-07-20T00:00:00"), "6-11", (short) 265, (byte) 10, (byte) 12, "Center", 1610612745L, "Houston", "Rockets", "Western", "Southwest", "https://cdn.nba.com/headshots/nba/latest/1040x760/203500.png", "https://cdn.nba.com/logos/nba/1610612745/global/L/logo.svg");
-    PlayerSummary player3 = new PlayerSummary(1628389L, "Bam", "Adebayo", LocalDateTime.parse("1997-07-18T00:00:00"), "6-9", (short) 255, (byte) 7, (byte) 13, "Center-Forward", 1610612748L, "Miami", "Heat", "Eastern", "Southeast", "https://cdn.nba.com/headshots/nba/latest/1040x760/1628389.png", "https://cdn.nba.com/logos/nba/1610612748/global/L/logo.svg");
 
     @Test
     void testGetAllPlayers() throws JsonProcessingException, InterruptedException {
+        PlayerSummary player1 = new PlayerSummary(1630173L, "Precious", "Achiuwa", LocalDateTime.parse("1999-09-19T00:00:00"), "6-8", (short) 243, (byte) 4, (byte) 5, "Forward", 1610612752L, "New York", "Knicks", "Eastern", "Atlantic", "https://cdn.nba.com/headshots/nba/latest/1040x760/1630173.png", "https://cdn.nba.com/logos/nba/1610612752/global/L/logo.svg");
+        PlayerSummary player2 = new PlayerSummary(203500L, "Steven", "Adams", LocalDateTime.parse("1993-07-20T00:00:00"), "6-11", (short) 265, (byte) 10, (byte) 12, "Center", 1610612745L, "Houston", "Rockets", "Western", "Southwest", "https://cdn.nba.com/headshots/nba/latest/1040x760/203500.png", "https://cdn.nba.com/logos/nba/1610612745/global/L/logo.svg");
+        PlayerSummary player3 = new PlayerSummary(1628389L, "Bam", "Adebayo", LocalDateTime.parse("1997-07-18T00:00:00"), "6-9", (short) 255, (byte) 7, (byte) 13, "Center-Forward", 1610612748L, "Miami", "Heat", "Eastern", "Southeast", "https://cdn.nba.com/headshots/nba/latest/1040x760/1628389.png", "https://cdn.nba.com/logos/nba/1610612748/global/L/logo.svg");
+
         List<PlayerSummary> listOfPlayers = List.of(player1, player2, player3);
         PlayerSummaryResponse playerSummaryResponse = new PlayerSummaryResponse(listOfPlayers, 1, 2, null, false, 615);
 
@@ -148,7 +149,7 @@ public class PlayerMockWebServerTest {
                 .setBody(jsonResponse)
                 .setResponseCode(404));
 
-        StepVerifier.create(playerService.getPlayerById(145524323L))
+        StepVerifier.create(playerService.getPlayerById(145524323))
                 .expectErrorMatches(throwable ->
                         throwable instanceof PlayerNotFoundException &&
                                 throwable.getMessage().equals("No player found"))
@@ -157,5 +158,41 @@ public class PlayerMockWebServerTest {
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals("/players?player_id=145524323", recordedRequest.getPath());
+    }
+
+    @Test
+    void testGetPlayersBySearch() throws JsonProcessingException, InterruptedException {
+        PlayerSummary player1 = new PlayerSummary(1630163L, "LaMelo", "Ball", LocalDateTime.parse("2001-08-22T00:00:00"), "6-7", (short) 180, (byte) 4, (byte) 1, "Guard", 1610612766L, "Charlotte", "Hornets", "Eastern", "Southeast", "https://cdn.nba.com/headshots/nba/latest/1040x760/1630163.png", "https://cdn.nba.com/logos/nba/1610612766/global/L/logo.svg");
+        PlayerSummary player2 = new PlayerSummary(1628366L, "Lonzo", "Ball", LocalDateTime.parse("1997-10-27T00:00:00"), "6-6", (short) 190, (byte) 5, (byte) 2, "Guard", 1610612741L, "Chicago", "Bulls", "Eastern", "Central", "https://cdn.nba.com/headshots/nba/latest/1040x760/1628366.png", "https://cdn.nba.com/logos/nba/1610612741/global/L/logo.svg");
+        String jsonResponse = objectMapper.writeValueAsString(List.of(player1, player2));
+
+        mockWebServer.enqueue(new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(jsonResponse));
+
+        StepVerifier.create(playerService.getPlayersBySearch("Ball"))
+                .expectNext(player1)
+                .expectNext(player2)
+                .verifyComplete();
+
+        RecordedRequest recordedRequest = mockWebServer.takeRequest();
+        Assertions.assertEquals("GET", recordedRequest.getMethod());
+        Assertions.assertEquals("/players/search?keyword=Ball", recordedRequest.getPath());
+    }
+
+    @Test
+    void testGetPlayersBySearch_EmptyKeyword() throws JsonProcessingException, InterruptedException {
+        String jsonResponse = "[]";
+
+        mockWebServer.enqueue(new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(jsonResponse));
+
+        StepVerifier.create(playerService.getPlayersBySearch("4243f2f2fwsf"))
+                .verifyComplete();
+
+        RecordedRequest recordedRequest = mockWebServer.takeRequest();
+        Assertions.assertEquals("GET", recordedRequest.getMethod());
+        Assertions.assertEquals("/players/search?keyword=4243f2f2fwsf", recordedRequest.getPath());
     }
 }
