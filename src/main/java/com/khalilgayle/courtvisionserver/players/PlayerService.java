@@ -77,6 +77,23 @@ public class PlayerService {
                 });
     }
 
-
+    public Flux<PlayerCategoryLeader> getCategoryLeaders(int numberOfPlayers, String category) {
+        return webClient.get()
+                .uri(UriBuilder ->
+                        UriBuilder.path("/players/categories")
+                                .queryParam("number_of_players", numberOfPlayers)
+                                .queryParam("category", category)
+                                .build()
+                )
+                .exchangeToFlux(clientResponse -> {
+                    if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) {
+                        return Flux.error(new PlayersNotFoundException("No players found"));
+                    } else if (clientResponse.statusCode().equals(HttpStatus.OK)) {
+                        return clientResponse.bodyToFlux(PlayerCategoryLeader.class);
+                    } else {
+                        return Flux.error(new RuntimeException("Internal service error occurred while fetching players"));
+                    }
+                });
+    }
 }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.khalilgayle.courtvisionserver.errorhandling.PlayerNotFoundException;
+import com.khalilgayle.courtvisionserver.players.PlayerCategoryLeader;
 import com.khalilgayle.courtvisionserver.players.PlayerSummary;
 import com.khalilgayle.courtvisionserver.players.PlayerSummaryResponse;
 import com.khalilgayle.courtvisionserver.players.PlayerService;
@@ -194,5 +195,27 @@ public class PlayerMockWebServerTest {
         RecordedRequest recordedRequest = mockWebServer.takeRequest();
         Assertions.assertEquals("GET", recordedRequest.getMethod());
         Assertions.assertEquals("/players/search?keyword=4243f2f2fwsf", recordedRequest.getPath());
+    }
+
+    @Test
+    void testGetPlayersByCategoryLeaders() throws JsonProcessingException, InterruptedException {
+        PlayerCategoryLeader player1 = new PlayerCategoryLeader(203507L, "Giannis Antetokounmpo", 1, 1610612749L, "24", "12.8", "20.9", "0.613", "0.2", "0.8", "0.222", "7", "11.3", "0.614", "2", "9.6", "11.6", "6", "0.7", "1.5", "3.4", "32.7", "36.6");
+        PlayerCategoryLeader player2 = new PlayerCategoryLeader(1628983L, "Shai Gilgeous-Alexander", 2, 1610612760L, "31", "10.9", "20.9", "0.523", "2.1", "6.2", "0.344", "7", "7.9", "0.882", "0.8", "4.8", "5.6", "6.2", "1.9", "1.2", "2.7", "31", "32.3");
+        String jsonResponse = objectMapper.writeValueAsString(List.of(player1, player2));
+
+        mockWebServer.enqueue(new MockResponse()
+                .addHeader("Content-Type", "application/json")
+                .setBody(jsonResponse));
+
+        StepVerifier.create(playerService.getCategoryLeaders(2, "PTS"))
+                .expectNext(player1)
+                .expectNext(player2)
+                .verifyComplete();
+
+        RecordedRequest recordedRequest = mockWebServer.takeRequest();
+        Assertions.assertEquals("GET", recordedRequest.getMethod());
+        Assertions.assertEquals("/players/categories?number_of_players=2" +
+                        "&category=PTS",
+                recordedRequest.getPath());
     }
 }

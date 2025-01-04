@@ -43,6 +43,7 @@ The project uses Spring Boot 3.4 and is built with Maven. Key dependencies inclu
 ### Core Dependencies
 - Spring Boot WebFlux: Reactive web framework
 - Spring Data R2DBC: Reactive database connectivity
+- Spring Data Redis (Access+Driver): Advanced and thread-safe Java Redis client for synchronous, asynchronous, and reactive usage.
 - PostgreSQL & R2DBC PostgreSQL: Database and its reactive driver
 - Project Lombok: Reduces boilerplate code
 - Validation: Bean Validation with Hibernate validator
@@ -50,6 +51,7 @@ The project uses Spring Boot 3.4 and is built with Maven. Key dependencies inclu
 ### Development Dependencies
 - Spring Boot DevTools: Development-time features
 - Spring Boot Test: Testing framework
+- Spring Boot Actuator: Supports built in endpoints that let you monitor and manage your application
 - Reactor Test: Testing reactive streams
 
 To install all dependencies, simply run:
@@ -79,13 +81,13 @@ java -jar target/courtvision-server-0.0.1-SNAPSHOT.jar
 The API follows RESTful conventions. Base URL: http://localhost:8080/api/v1
 
 #### Players
-- GET /players - List all players
-- GET /players/{id} - Get player details
-- GET /players/search?name={name} - Search players by name
+- GET /players?page={page}&players_per_page={players_per_page} - List all players
+- GET /players/categories?number_of_players={number_of_players}&category={category} - Show players by category leaders
+- GET /players/search?keyword={keyword} - Search by player name 
+- GET /players/{playerId} - Get single player 
+  details
 
 #### Teams
 - GET /teams - List all teams
-- POST /teams - Create new team
-- PUT /teams/{id} - Update team
-- DELETE /teams/{id} - Delete team
+- GET /teams/{teamId}/players - Get all players on a team
 
