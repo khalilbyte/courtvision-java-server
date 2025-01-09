@@ -2,7 +2,7 @@ package com.khalilgayle.courtvisionserver.players;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-    import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,16 +22,20 @@ public class PlayerController {
             @RequestParam(value = "number_of_players") int numberOfPlayers,
             @RequestParam(value = "category") String category
     ) {
+        LOGGER.info("Request made: numberOfPlayers = {}, category = {}",
+                numberOfPlayers, category);
         return playerService.getCategoryLeaders(numberOfPlayers, category);
     }
 
     @GetMapping("/players/search")
     public Flux<PlayerSummary> getPlayersBySearch(@RequestParam(value = "keyword") String keyword) {
+        LOGGER.info("Request made: search keyword = {}", keyword);
         return playerService.getPlayersBySearch(keyword);
     }
 
     @GetMapping("/players/{playerId}")
     public Mono<PlayerSummary> getByPlayerId(@PathVariable long playerId) {
+        LOGGER.info("Request made: playerId = {}", playerId);
         return playerService.getPlayerById(playerId);
     }
 

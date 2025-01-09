@@ -1,5 +1,6 @@
 package com.khalilgayle.courtvisionserver.players;
 
+import com.khalilgayle.courtvisionserver.errorhandling.InvalidQueryParametersException;
 import com.khalilgayle.courtvisionserver.errorhandling.PlayerNotFoundException;
 import com.khalilgayle.courtvisionserver.errorhandling.PlayersNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,8 @@ public class PlayerService {
                 .exchangeToFlux(clientResponse -> {
                     if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) {
                         return Flux.error(new PlayersNotFoundException("No players found"));
+                    } else if (clientResponse.statusCode().equals(HttpStatus.BAD_REQUEST)) {
+                        return Flux.error(new InvalidQueryParametersException("Value must be minimum 3 characters"));
                     } else if (clientResponse.statusCode().equals(HttpStatus.OK)) {
                         return clientResponse.bodyToFlux(PlayerSummary.class);
                     } else {

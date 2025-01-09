@@ -25,6 +25,11 @@ public class GlobalExceptionHandler extends ResponseStatusExceptionHandler {
         return Mono.just(ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage()));
     }
 
+    @ExceptionHandler(InvalidQueryParametersException.class)
+    public Mono<ResponseEntity<String>> handleInvalidQueryParametersException(InvalidQueryParametersException ex, ServerWebExchange serverWebExchange) {
+        return Mono.just(ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage()));
+    }
+
     @ExceptionHandler(Exception.class)
     public Mono<ResponseEntity<String>> handleGenericException(Exception ex, ServerWebExchange serverWebExchange) {
         return Mono.just(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred: " + ex.getMessage()));
