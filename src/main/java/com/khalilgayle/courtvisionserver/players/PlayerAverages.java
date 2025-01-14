@@ -2,13 +2,15 @@ package com.khalilgayle.courtvisionserver.players;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record PlayerCategoryLeader(
+public record PlayerAverages(
         @JsonProperty("player_id") Long playerId,
-        @JsonProperty("player_name") String playerName,
-        @JsonProperty("rank") Integer rank,
+        @JsonProperty("season_id") String seasonId,
         @JsonProperty("team_id") Long teamId,
-        @JsonProperty("games_played") Integer gamesPlayed,
-        @JsonProperty("minutes_played") Float minutesPlayed,
+        @JsonProperty("team_abbreviation") String teamAbbreviation,
+        @JsonProperty("player_age") Integer playerAge,
+        @JsonProperty("gp") Integer gp,
+        @JsonProperty("gs") Integer gs,
+        @JsonProperty("minutes") Float minutes,
         @JsonProperty("fgm") Float fgm,
         @JsonProperty("fga") Float fga,
         @JsonProperty("fg_pct") Float fgPct,
@@ -25,6 +27,7 @@ public record PlayerCategoryLeader(
         @JsonProperty("stl") Float stl,
         @JsonProperty("blk") Float blk,
         @JsonProperty("tov") Float tov,
-        @JsonProperty("pts") Float pts,
-        @JsonProperty("eff") Float eff
-) {}
+        @JsonProperty("pf") Float pf,
+        @JsonProperty("pts") Float pts
+) {
+}

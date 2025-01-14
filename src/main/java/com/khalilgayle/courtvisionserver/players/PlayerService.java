@@ -3,6 +3,7 @@ package com.khalilgayle.courtvisionserver.players;
 import com.khalilgayle.courtvisionserver.errorhandling.InvalidQueryParametersException;
 import com.khalilgayle.courtvisionserver.errorhandling.PlayerNotFoundException;
 import com.khalilgayle.courtvisionserver.errorhandling.PlayersNotFoundException;
+import com.khalilgayle.courtvisionserver.errorhandling.StatsNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -14,15 +15,34 @@ import reactor.core.publisher.Mono;
 public class PlayerService {
     private final WebClient webClient;
 
+
     public PlayerService(WebClient webClient) {
         this.webClient = webClient;
+    }
+
+    public Flux<PlayerAverages> getCareerAverages(long playerId) {
+        return webClient
+                .get()
+                .uri(UriBuilder -> UriBuilder
+                        .path("/players/{playerId}/career-averages")
+                        .build(playerId))
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToFlux(clientResponse -> {
+                    if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) {
+                        return Flux.error(new StatsNotFoundException("Unable to fetch player stats at this time"));
+                    } else if (clientResponse.statusCode().equals(HttpStatus.OK)) {
+                        return clientResponse.bodyToFlux(PlayerAverages.class);
+                    } else {
+                        return Flux.error(new RuntimeException("Internal service error occurred while attempting to fetch stats"));
+                    }
+                });
     }
 
     public Flux<PlayerSummary> getPlayersBySearch(String keyword) {
         return webClient
                 .get()
                 .uri(uriBuilder -> uriBuilder
-                        .path("players/search")
+                        .path("/players/search")
                         .queryParam("keyword", keyword)
                         .build()
                 )

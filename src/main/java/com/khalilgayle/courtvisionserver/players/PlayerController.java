@@ -17,6 +17,14 @@ public class PlayerController {
         this.playerService = playerService;
     }
 
+    @GetMapping("/players/{playerId}/career-averages")
+    public Flux<PlayerAverages> getCareerAverages(
+            @PathVariable long playerId
+    ) {
+        LOGGER.info("Request made: player ID = {}", playerId);
+        return playerService.getCareerAverages(playerId);
+    }
+
     @GetMapping("/players/categories")
     public Flux<PlayerCategoryLeader> getPlayersByCategoryLeader(
             @RequestParam(value = "number_of_players") int numberOfPlayers,
